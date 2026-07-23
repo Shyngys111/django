@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="cart-page">
+    <div class="cart-header">
+        <div>
+            <h1>Корзина</h1>
+            <p>Здесь отображаются выбранные товары. Можно удалить любой элемент или вернуться к каталогу.</p>
+        </div>
+        <a href="{% url 'products:list' %}" class="secondary-btn">Продолжить покупки</a>
+    </div>
+    {% if cart|length > 0 %}
+        <div class="cart-table-wrapper">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Товар</th>
+                        <th>Цена</th>
+                        <th>Количество</th>
+                        <th>Сумма</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                    <tr>
+                    <td><a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a></td>
+                    <td>{{ item.price }} ₸</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.total_price }} ₸</td>
+                    <td>
+                        <form action="{% url 'cart:remove' item.product.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="remove-btn">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="cart-total">
+            <strong>Итого:</strong> {{ cart.get_total_price }} ₸
+        </div>
+    {% else %}
+        <p>Корзина пуста.</p>
+        <p><a href="{% url 'products:list' %}">Вернуться к каталогу</a></p>
+    {% endif %}
+</div>
+{% endblock %}
