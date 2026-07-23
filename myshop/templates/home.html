@@ -15,13 +15,13 @@
             <div class="product-card">
                 <div class="product-image-container">
                     {% if product.image %}
-                        <img class="product-img" src="{{ product.image.url }}" alt="{{ product.title }}">
+                        <img class="product-img" src="{{ product.image.url }}" alt="{{ product.name }}">
                     {% else %}
                         <div class="no-image">Нет фото</div>
                     {% endif %}
                 </div>
                 
-                <h2 class="product-title">{{ product.title }}</h2>
+                <h2 class="product-title">{{ product.name }}</h2>
                 <p class="product-text">{{ product.description }}</p>
                 
                 <div class="product-footer">

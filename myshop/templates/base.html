@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин обуви</title>
+    <link rel="stylesheet" href="{% static 'home.css' %}?v=2">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-top">
+            <a class="site-title" href="{% url 'products:list' %}">StepUp Shoes</a>
+            <nav class="site-nav">
+                <a href="{% url 'products:list' %}">Каталог</a>
+                <a href="{% url 'cart:detail' %}">Корзина</a>
+            </nav>
+        </div>
+        <div class="container header-hero">
+            <div class="header-hero__content">
+                <span class="eyebrow">Новая коллекция</span>
+                <h1>Любимые модели для уверенного шага</h1>
+                <p>Стильная обувь для работы, прогулок и спорта — в одном удобном магазине.</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="site-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>StepUp Shoes © 2026</p>
+            <p>Быстрая доставка и поддержка 24/7</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="products-page">
+    <section class="products-header">
+        <h1>Каталог обуви</h1>
+        <form action="" method="get" class="search-form">
+            <input
+                type="search"
+                name="q"
+                placeholder="Поиск по названию, описанию или категории"
+                value="{{ search_query }}"
+                class="search-input"
+            >
+            <button type="submit" class="search-btn">Найти</button>
+        </form>
+    </section>
+
+    {% if categories %}
+    <nav class="categories-nav">
+        <a class="category-link {% if not current_category %}active{% endif %}" href="{% url 'products:list' %}">Все</a>
+        {% for category in categories %}
+            <a class="category-link {% if current_category and current_category.slug == category.slug %}active{% endif %}" href="{% url 'products:category' category.slug %}">{{ category.name }}</a>
+        {% endfor %}
+    </nav>
+    {% endif %}
+
+    <div class="products-container">
+        {% for product in products %}
+            <article class="product-card">
+                <a href="{{ product.get_absolute_url }}" class="product-link">
+                    <div class="product-image-container">
+                        {% if product.image %}
+                            <img class="product-img" src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <div class="product-no-image">Нет фото</div>
+                        {% endif %}
+                    </div>
+                </a>
+                <div class="product-info">
+                    <a href="{{ product.get_absolute_url }}" class="product-link">
+                        <h2>{{ product.name }}</h2>
+                    </a>
+                    <p class="product-category-label">{{ product.category.name }}</p>
+                    <p class="product-description">{{ product.description|truncatechars:120 }}</p>
+                </div>
+                <div class="product-meta">
+                    <div class="product-price-block">
+                        <span class="product-price">{{ product.price }} ₸</span>
+                    </div>
+                    <form action="{% url 'cart:add' product.id %}" method="post" class="add-to-cart-form">
+                        {% csrf_token %}
+                        <input type="number" name="quantity" min="1" value="1" class="quantity-input">
+                        <button type="submit" class="buy-btn">В корзину</button>
+                    </form>
+                </div>
+            </article>
+        {% empty %}
+            <p>Товары не найдены.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
